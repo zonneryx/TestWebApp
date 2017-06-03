@@ -1,0 +1,115 @@
+﻿@model TestWebApp.Models.Event
+
+@{
+    ViewBag.Title = "Редактирование события";
+}
+
+<h2>Изменение события</h2>
+
+@using (Html.BeginForm())
+{
+   @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" }, autofocus = "autofocus" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Users, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @{
+                    List<TestWebApp.Models.User> allUsers = ViewBag.AllUsers;
+                }
+                <select id="multiselect" class="multiselect" multiple="multiple" required>
+                    @for (int i = 0; i < allUsers.Count; i++)
+                    {
+                        <option value="@allUsers[i].Id">@allUsers[i].Name</option>
+                    }
+                </select>
+                <span class="text-danger field-validation-error" data-valmsg-for="multiselect" data-valmsg-replace="true">
+                    <span for="multiselect" class="">Требуется как минимум один участник
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+                    }
+
+<div>
+    @Html.ActionLink("Назад", "Index")
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('input[id="Name"]').focus()
+        $('.datepicker').removeAttr("data-val-date");
+        $(document).ready(function() {
+            $(function () {
+                $('.datepicker').datetimepicker({
+                    locale: 'ru',
+                    format: 'DD.MM.YYYY HH:mm:ss',
+                });
+            });
+            var bindUsers = function (e) {
+                $('#multiselect input[type="hidden"]').remove();
+                var selectedIds = $('#multiselect').val();
+                if(selectedIds==null){
+                    $('span [for="multiselect"]').show();
+                }
+                else{
+                    $('span [for="multiselect"]').hide();
+                }
+                $(selectedIds).each(function (index, element){
+                    $('#multiselect').append('<input type="hidden" name="UserIds['+index+']"  value="'+element+'" />');
+                })
+            };
+            $('#multiselect').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true,
+                selectAllJustVisible: false,
+                selectAllText: "Выбрать всех",
+                nonSelectedText: 'Не выбрано ни одного участника!',
+                delimiterText: ';',
+                allSelectedText: 'Все',
+                nSelectedText: '',
+                onDropdownHidden: bindUsers
+            });
+            @foreach (var user in Model.Users)
+            {
+                    <text> $('#multiselect').multiselect('select', @user.Id) </text>
+            }
+            bindUsers();
+            });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

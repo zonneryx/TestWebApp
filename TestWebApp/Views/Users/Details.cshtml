@@ -1,0 +1,51 @@
+﻿@model TestWebApp.Models.User
+
+@{
+    ViewBag.Title = "Профиль";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Events)
+        </dt>
+        <dd>
+            @foreach (var userEvent in Model.Events.OrderByDescending(e=>e.Date))
+            {
+                var color = userEvent.Date < DateTime.Now ? "#909090" : "#000";
+                <div style="color:@color">
+                    @Html.DisplayFor(model => userEvent.Name)
+                    <a>-</a>
+                    @Html.ValueFor(model=>userEvent.Date, "{0:H:mm, dd MMMM yyyy }")
+                </div>
+            }
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Назад", "Index")
+</p>
