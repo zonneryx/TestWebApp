@@ -104,11 +104,14 @@
                 nSelectedText: '',
                 onDropdownHidden: bindUsers
             });
-            @foreach (var user in Model.Users)
+            @if (Model.Users != null)
             {
-                    <text> $('#multiselect').multiselect('select', @user.Id) </text>
+                foreach (var user in Model.Users)
+                {
+                        <text> $('#multiselect').multiselect('select', @user.Id) </text>
+                }
             }
-            bindUsers();
+                bindUsers();
             });
     </script>
     @Scripts.Render("~/bundles/jqueryval")

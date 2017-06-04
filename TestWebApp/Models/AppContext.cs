@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -11,6 +12,11 @@ namespace TestWebApp.Models
     {
         public DbSet<User> Users  { get; set; }
         public DbSet<Event> Events  { get; set; }
+
+        public AppContext() : base("DefaultConnection")
+        {
+
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

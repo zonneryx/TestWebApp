@@ -13,11 +13,11 @@ namespace TestWebApp.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Укажите название")]
         [Display(Name = "Название")]
         [MaxLength(64)]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Укажите дату и время")]
         [Display(Name = "Дата и время")]
         public DateTime Date { get; set; }
         [Display(Name = "Место проведения")]
@@ -25,5 +25,8 @@ namespace TestWebApp.Models
         public string Place { get; set; }
         [Display(Name = "Участники")]
         public virtual ICollection<User> Users { get; set; }
+
     }
+  
+
 }

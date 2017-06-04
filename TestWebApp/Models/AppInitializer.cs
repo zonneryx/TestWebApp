@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.Configuration;
+
 namespace TestWebApp.Models
 {
     public class AppContextInitializer : DropCreateDatabaseAlways<AppContext>
     {
         protected override void Seed(AppContext context)
         {
+           
             #region Init Users
             var users  = new []{ new User()
                 {

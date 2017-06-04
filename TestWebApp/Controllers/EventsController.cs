@@ -29,6 +29,8 @@ namespace TestWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Date,Place")] Event @event, int[] UserIds)
         {
+            if (@event.Date < DateTime.Now) ModelState.AddModelError("Date","Дата и время некорректны");
+
             if (ModelState.IsValid)
             {
                 db.AddEvent(@event, UserIds);
@@ -57,6 +59,7 @@ namespace TestWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Date,Place")] Event @event, int[] UserIds)
         {
+            if (@event.Date < DateTime.Now) ModelState.AddModelError("Date", "Дата и время некорректны");
             if (ModelState.IsValid)
             {
                 db.UpdateEvent(@event, UserIds);
